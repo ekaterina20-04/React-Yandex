@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import styles from "./Header.module.css";
 
 export const Header = () => {
@@ -9,22 +10,37 @@ export const Header = () => {
           <div className={styles.main_text}> Межгалактическая аналитика</div>
         </div>
         <div className={styles.main_right}>
-          <div className={styles.anal}>
+          <NavLink
+            to="/"
+            className={({ isActive }) =>
+              isActive ? styles.linkActive : styles.link
+            }
+          >
             <img src="/img/save.png" alt="save" className={styles.a_img} />{" "}
             <p>CSV Аналитик</p>
-          </div>
-          <div className={styles.gener}>
+          </NavLink>
+          <NavLink
+            to="/generate"
+            className={({ isActive }) =>
+              isActive ? styles.linkActive : styles.link
+            }
+          >
             <img src="/img/pluss.png" alt="plus" className={styles.g_img} />
             <p>CSV Генератор</p>
-          </div>
-          <div className={styles.history}>
+          </NavLink>
+          <NavLink
+            to="/history"
+            className={({ isActive }) =>
+              isActive ? styles.linkActive : styles.link
+            }
+          >
             <img
               src="/img/history.png"
               alt="history"
               className={styles.h_img}
             />
             <p>История</p>
-          </div>
+          </NavLink>
         </div>
       </div>
     </>
