@@ -1,0 +1,51 @@
+.main {
+  height: 61px;
+  margin: 40px 40px 0;
+  display: flex;
+  justify-content: space-between;
+}
+
+.main_left {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+}
+
+.main_text {
+  margin-left: 40px;
+  background-color: var(--purple-intance);
+  height: 39px;
+  font-size: 30px;
+  color: var(--c201);
+  font-weight: 500;
+  text-transform: uppercase;
+  padding: 0 6px;
+}
+
+.main_right {
+  display: flex;
+  color: var(--c201);
+  align-items: center;
+  gap: 20px;
+  font-size: 30px;
+  font-weight: 300;
+}
+.anal,
+.gener,
+.history {
+  display: flex;
+  gap: 16px;
+}
+.history {
+  margin-left: 10px;
+}
+.h_img {
+  height: 31px;
+}
+.a_img,
+.g_img {
+  height: 35px;
+  width: 35px;
+}

@@ -1,0 +1,19 @@
+:root {
+  --purple-intance: #cb81ff;
+  --bg: #fce2ff;
+  --purple-dim: #eacdff;
+  --mint: #d4fae6;
+  --c201: #201b10;
+}
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+:root {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+}
+body {
+  background-color: var(--bg);
+}
