@@ -4,6 +4,10 @@
   --purple-dim: #eacdff;
   --mint: #d4fae6;
   --c201: #201b10;
+  --gray-dark: #787878;
+  --gray-light: #c0c0c0;
+  --orange: #ff5f00;
+  --yellow: #fce300;
 }
 * {
   margin: 0;

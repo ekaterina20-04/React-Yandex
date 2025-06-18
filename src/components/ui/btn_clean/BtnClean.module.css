@@ -1,0 +1,10 @@
+.cleanButton {
+  padding: 20px 27px;
+  font-size: 35px;
+  border: none;
+  border-radius: 25px;
+  background-color: var(--c201);
+  color: white;
+  opacity: 1;
+  font-weight: 500;
+}

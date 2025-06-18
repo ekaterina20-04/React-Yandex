@@ -1,0 +1,7 @@
+.succButton {
+  padding: 15px 30px;
+  font-size: 35px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--mint);
+}
