@@ -1,0 +1,10 @@
+.main {
+}
+.loader {
+  padding: 10px 176px;
+  background-color: var(--purple-intance);
+  border-radius: 10px;
+}
+.text {
+  font-size: 35px;
+}

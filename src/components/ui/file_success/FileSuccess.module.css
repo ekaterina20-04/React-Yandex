@@ -3,5 +3,10 @@
   font-size: 35px;
   border: none;
   border-radius: 10px;
-  background-color: var(--mint);
+  background-color: var(--purple-intance);
+}
+
+.closing {
+  display: flex;
+  gap: 10px;
 }

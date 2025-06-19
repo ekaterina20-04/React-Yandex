@@ -1,0 +1,7 @@
+.close {
+  background-color: var(--c201);
+  padding: 19px;
+  color: white;
+  border-radius: 10px;
+  font-size: 40px;
+}
