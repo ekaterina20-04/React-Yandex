@@ -4,7 +4,7 @@ import { GenerationProcess } from "@/components/ui/gener_procces/GenerationProce
 import { useState } from "react";
 import { fetchReport } from "@/entities/report/api";
 import { FileError } from "@/components/ui/file_error/FileError";
-import { addHistory } from "@/entities/report/history/history";
+import { addHistory } from "@/entities/history/history";
 export const GeneratorPage = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string | null>(null);
@@ -26,7 +26,7 @@ export const GeneratorPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await fetchReport({ size: 0.1 });
+      const result = await fetchReport({ size: 0.0001 });
 
       const fileName = `report_${Date.now()}.csv`;
       downloadCSV(result, fileName);

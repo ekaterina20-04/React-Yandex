@@ -1,9 +1,5 @@
 import styles from "./BtnSentCan.module.css";
 
 export const BtnSentCan = () => {
-  return (
-    <button className={styles.sendButtonCan} disabled>
-      Отправить
-    </button>
-  );
+  return <button className={styles.sendButtonCan}>Отправить</button>;
 };

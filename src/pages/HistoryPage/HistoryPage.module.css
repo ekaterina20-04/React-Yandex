@@ -1,0 +1,40 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  margin: 0 40px;
+  margin-top: 80px;
+  height: 100%;
+}
+
+.purple_block {
+  background-color: var(--purple-intance);
+  padding: 30px 20px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+}
+
+.file_name {
+  display: flex;
+  gap: 15px;
+
+  align-items: center;
+}
+
+.date {
+  display: flex;
+  align-items: center;
+}
+
+.success {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
+
+.not_success {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+}
