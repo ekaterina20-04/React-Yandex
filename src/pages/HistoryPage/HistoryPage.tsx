@@ -18,19 +18,36 @@ export const HistoryPage = () => {
           <></>
         ) : (
           history.map((item) => (
-            <div className={styles.purple_block}>
+            <div key={item.id} className={styles.purple_block}>
               <div className={styles.file_name}>
                 <img src="/img/file_icon.png" alt="file_icon" />
-                <p>{}</p>
+                <p>{item.fileName}</p>
               </div>
-              <div className={styles.date}>date</div>
-              <div className={styles.success}>
-                <p>Обработан успешно</p> <img src="/img/success.png" alt="" />
+              <div className={styles.date}>{item.date}</div>
+
+              <div
+                className={item.success ? styles.success : styles.success_not}
+              >
+                <p>Обработан успешно</p>{" "}
+                <img
+                  src={
+                    item.success ? "/img/success_black.png" : "/img/success.png"
+                  }
+                  alt=""
+                />
               </div>
-              <div className={styles.not_success}>
-                {" "}
+              <div
+                className={!item.success ? styles.success : styles.success_not}
+              >
                 <p>Не удалось обработать</p>
-                <img src="/img/not_success.png" alt="" />
+                <img
+                  src={
+                    item.success
+                      ? "/img/not_success.png"
+                      : "/img/not_success_black.png"
+                  }
+                  alt=""
+                />
               </div>
             </div>
           ))

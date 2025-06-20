@@ -4,6 +4,7 @@
   margin: 0 40px;
   margin-top: 80px;
   height: 100%;
+  gap: 10px;
 }
 
 .purple_block {
@@ -20,9 +21,12 @@
   gap: 15px;
 
   align-items: center;
+  color: var(--c201);
 }
 
 .date {
+  color: var(--c201);
+
   display: flex;
   align-items: center;
 }
@@ -31,10 +35,12 @@
   display: flex;
   gap: 15px;
   align-items: center;
+  color: var(--c201);
+  cursor: pointer;
 }
-
-.not_success {
+.success_not {
   display: flex;
   gap: 15px;
   align-items: center;
+  color: var(--gray-purple);
 }
