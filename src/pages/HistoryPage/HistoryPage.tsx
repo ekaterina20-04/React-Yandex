@@ -1,9 +1,12 @@
 import { useEffect, useState } from "react";
 import styles from "./HistoryPage.module.css";
 import type { HistoryItem } from "@/entities/history/saveToHistory";
+import { Modal } from "./HistoryModal";
+import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
 
 export const HistoryPage = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [selectedItem, setSelectedItem] = useState<HistoryItem | null>(null);
 
   useEffect(() => {
     const data = localStorage.getItem("uploadHistory");
@@ -11,6 +14,13 @@ export const HistoryPage = () => {
       setHistory(JSON.parse(data));
     }
   }, []);
+  const openModal = (item: HistoryItem) => {
+    if (item.success) {
+      setSelectedItem(item);
+    }
+  };
+  const closeModal = () => setSelectedItem(null);
+
   return (
     <>
       <div className={styles.main}>
@@ -18,7 +28,12 @@ export const HistoryPage = () => {
           <></>
         ) : (
           history.map((item) => (
-            <div key={item.id} className={styles.purple_block}>
+            <div
+              onClick={() => openModal(item)}
+              style={{ cursor: item.success ? "pointer" : "default" }}
+              key={item.id}
+              className={styles.purple_block}
+            >
               <div className={styles.file_name}>
                 <img src="/img/file_icon.png" alt="file_icon" />
                 <p>{item.fileName}</p>
@@ -53,6 +68,79 @@ export const HistoryPage = () => {
           ))
         )}
       </div>
+      {selectedItem && selectedItem.highlights && (
+        <Modal onClose={closeModal}>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.total_spend_galactic}
+              </p>
+              <p>общие расходы в галактических кредитах</p>
+            </div>
+          </div>
+
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.rows_affected}
+              </p>
+              <p>количество обработанных записей</p>
+            </div>
+          </div>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.big_spent_at != null
+                  ? dayOfYearToDateString(selectedItem.highlights.big_spent_at)
+                  : "-"}
+              </p>
+              <p>день года с максимальными расходами</p>
+            </div>
+          </div>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.big_spent_civ}
+              </p>
+              <p>цивилизация с максимальными расходами</p>
+            </div>
+          </div>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.less_spent_civ}
+              </p>
+              <p>цивилизация с минимальными расходами</p>
+            </div>
+          </div>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.less_spent_at != null
+                  ? dayOfYearToDateString(selectedItem.highlights.less_spent_at)
+                  : "-"}
+              </p>
+              <p>день года с минимальными расходами </p>
+            </div>
+          </div>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.big_spent_value}
+              </p>
+              <p>максимальная сумма расходов за день </p>
+            </div>
+          </div>
+          <div className={styles.white_block}>
+            <div className={styles.block_text}>
+              <p className={styles.params_text}>
+                {selectedItem.highlights.average_spend_galactic}
+              </p>
+              <p> средние расходы в галактических кредитах</p>
+            </div>
+          </div>
+        </Modal>
+      )}
     </>
   );
 };

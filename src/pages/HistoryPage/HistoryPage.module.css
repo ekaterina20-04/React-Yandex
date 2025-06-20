@@ -44,3 +44,60 @@
   align-items: center;
   color: var(--gray-purple);
 }
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.closeBtn {
+  position: absolute;
+  margin-left: 0;
+}
+.modalContent {
+  background: white;
+  padding: 40px;
+  border-radius: 45px;
+  position: relative;
+  height: 60vh;
+  overflow-y: auto;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.white_block {
+  width: 900px;
+  margin-bottom: 15px;
+  height: 117px;
+  background-color: var(--purple-dim);
+  border-radius: 24px;
+}
+.block_text {
+  padding-top: 20px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+.params_text {
+  font-size: 40px;
+  font-weight: 600;
+}
