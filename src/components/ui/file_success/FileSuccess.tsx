@@ -4,7 +4,7 @@ import styles from "./FileSuccess.module.css";
 export const FileSuccess = () => {
   return (
     <div className={styles.closing}>
-      <div className={styles.succButton}>
+      <div>
         <button className={styles.succButton}>file_name</button>
       </div>
 

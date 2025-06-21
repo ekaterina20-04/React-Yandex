@@ -69,6 +69,10 @@
   background-color: white;
   border-radius: 10px;
 }
+.text {
+  font-size: 35px;
+  text-align: center;
+}
 .block_text {
   padding-top: 20px;
   font-size: 20px;

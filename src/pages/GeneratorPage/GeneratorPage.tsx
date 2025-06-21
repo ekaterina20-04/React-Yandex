@@ -44,6 +44,12 @@ export const GeneratorPage = () => {
       setLoading(false);
     }
   };
+  const handleReset = () => {
+    setData(null);
+    setError(null);
+    setLoading(false);
+  };
+
   return (
     <>
       <div className={styles.main}>
@@ -52,8 +58,13 @@ export const GeneratorPage = () => {
         </div>
         <div className={styles.btn} onClick={handleLoad}>
           {!loading && !error && <BtnGeneration />}
-          {loading && <GenerationProcess />}
-          {error && <FileError />}
+          {loading && (
+            <>
+              <GenerationProcess />{" "}
+              <div className={styles.text}>идет процесс генерации</div>
+            </>
+          )}
+          {error && <FileError onClose={handleReset} />}
         </div>
       </div>
     </>

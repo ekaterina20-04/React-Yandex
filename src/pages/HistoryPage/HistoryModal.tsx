@@ -9,13 +9,15 @@ export const Modal = ({
   children: React.ReactNode;
   onClose: () => void;
 }) => {
+  const handleReset = () => {};
+
   return ReactDOM.createPortal(
     <div className={styles.modalOverlay} onClick={onClose}>
       <div className={styles.modalContent} onClick={(e) => e.stopPropagation()}>
         {children}
       </div>
       <div className={styles.closeBtn} onClick={onClose}>
-        <Close />
+        <Close onClick={handleReset} />
       </div>
     </div>,
     document.body

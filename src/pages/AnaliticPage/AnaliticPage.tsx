@@ -6,6 +6,7 @@ import { FileSuccess } from "@/components/ui/file_success/FileSuccess";
 import { FileError } from "@/components/ui/file_error/FileError";
 import { BtnDownload } from "@/components/ui/btn_download/BtnDownload";
 import { BtnClean } from "@/components/ui/btn_clean/BtnClean";
+import { GenerationProcess } from "@/components/ui/gener_procces/GenerationProcess";
 import { BtnSentCan } from "@/components/ui/btn_sent_can/BtnSentCan";
 import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
 import { saveToHistory } from "@/entities/history/saveToHistory";
@@ -27,8 +28,10 @@ export const AnaliticPage = () => {
   const [uploadState, setUploadState] = useState<
     "initial" | "uploading" | "success" | "error"
   >("initial");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null); // <-- сохраняем файл
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
   const [highlights, setHighlights] = useState<HighlightData | null>(null);
+  const [isDragOver, setIsDragOver] = useState(false);
+  const [isParsing, setIsParsing] = useState(false);
 
   const handleFileUpload = async (file: File) => {
     console.log("Загружается:", file.name);
@@ -39,10 +42,7 @@ export const AnaliticPage = () => {
         throw new Error("Недопустимый формат файла");
       }
 
-      setSelectedFile(file); // <-- сохраняем файл в состояние
-
-      // Эмуляция загрузки
-      // await new Promise((resolve) => setTimeout(resolve, 2000));
+      setSelectedFile(file);
 
       setUploadState("success");
     } catch (err) {
@@ -51,10 +51,31 @@ export const AnaliticPage = () => {
       setSelectedFile(null);
     }
   };
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+    const file = e.dataTransfer.files[0];
+    if (file) handleFileUpload(file);
+  };
 
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(true);
+  };
+
+  const handleDragLeave = (e: React.DragEvent) => {
+    e.preventDefault();
+    setIsDragOver(false);
+  };
+  const getFrameClass = () => {
+    if (isDragOver || uploadState === "uploading") return styles.frameUploading;
+    if (uploadState === "success") return styles.frameSuccess;
+    if (uploadState === "error") return styles.frameError;
+    return styles.frameInitial;
+  };
   const handleSendClick = async () => {
     console.log("click");
-
+    setIsParsing(true);
     if (!selectedFile) {
       alert("Файл не выбран");
       return;
@@ -124,6 +145,8 @@ export const AnaliticPage = () => {
 
       alert("Агрегация завершена");
       console.log("hightlotns", highlights);
+      setIsParsing(false);
+      setUploadState("initial");
       if (highlights) {
         saveToHistory({
           id: generateId(),
@@ -135,6 +158,9 @@ export const AnaliticPage = () => {
       }
     } catch (error) {
       alert("Ошибка при отправке: " + error);
+      setIsParsing(false);
+      setUploadState("initial");
+
       saveToHistory({
         id: generateId(),
         date: new Date().toISOString(),
@@ -145,6 +171,13 @@ export const AnaliticPage = () => {
     }
   };
 
+  const handleReset = () => {
+    setSelectedFile(null);
+    setUploadState("initial");
+    setHighlights(null);
+    setIsParsing(false);
+    console.log("close");
+  };
   return (
     <>
       <div className={styles.main}>
@@ -153,33 +186,44 @@ export const AnaliticPage = () => {
           за сверхнизкое время
         </p>
         <div
-          className={`
-            ${styles.purple_block}
-            ${uploadState === "success" ? styles.frameInitial : ""}
-            ${uploadState === "uploading" ? styles.frameUploading : ""}
-            ${uploadState === "success" ? styles.frameSuccess : ""}
-            ${uploadState === "error" ? styles.frameError : ""}
-          `}
+          className={`${styles.purple_block} ${getFrameClass()}`}
+          onDragOver={handleDragOver}
+          onDragLeave={handleDragLeave}
+          onDrop={handleDrop}
         >
           <div className={styles.functional}>
             <div className={styles.button}>
-              {uploadState === "uploading" || uploadState === "initial" ? (
-                <BtnUpload onFileSelect={handleFileUpload} />
+              {isParsing && uploadState !== "initial" ? (
+                <>
+                  <GenerationProcess />
+                  <div className={styles.text}>идет парсинг файла </div>
+                </>
+              ) : uploadState === "uploading" || uploadState === "initial" ? (
+                <>
+                  <BtnUpload onFileSelect={handleFileUpload} />
+                  <div className={styles.for_p}>
+                    <p className={styles.text_functional}>
+                      или перетащите сюда
+                    </p>
+                  </div>
+                </>
               ) : uploadState === "success" ? (
-                <FileSuccess />
+                <>
+                  <FileSuccess onClose={handleReset} />
+                  <div className={styles.for_p}>
+                    <p className={styles.text_functional}>файл загружен!</p>
+                  </div>
+                </>
               ) : (
-                <FileError></FileError>
+                <FileError onClose={handleReset}></FileError>
               )}
-            </div>
-            <div className={styles.for_p}>
-              <p className={styles.text_functional}>или перетащите сюда</p>
             </div>
           </div>
         </div>
         <div className={styles.btn_sent}>
           {uploadState === "uploading" || uploadState === "initial" ? (
             <BtnSent />
-          ) : uploadState === "success" ? (
+          ) : uploadState === "success" && !isParsing ? (
             <div onClick={handleSendClick}>
               <BtnSentCan />
             </div>
