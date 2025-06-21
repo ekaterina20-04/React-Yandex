@@ -21,6 +21,15 @@ export const HistoryPage = () => {
   };
   const closeModal = () => setSelectedItem(null);
 
+  const deleteItem = (key: string) => {
+    const data = localStorage.getItem("uploadHistory");
+    if (data) {
+      const parsed: HistoryItem[] = JSON.parse(data);
+      const updated = parsed.filter((item) => item.id !== key);
+      localStorage.setItem("uploadHistory", JSON.stringify(updated));
+      setHistory(updated);
+    }
+  };
   return (
     <>
       <div className={styles.main}>
@@ -28,41 +37,53 @@ export const HistoryPage = () => {
           <></>
         ) : (
           history.map((item) => (
-            <div
-              onClick={() => openModal(item)}
-              style={{ cursor: item.success ? "pointer" : "default" }}
-              key={item.id}
-              className={styles.purple_block}
-            >
-              <div className={styles.file_name}>
-                <img src="/img/file_icon.png" alt="file_icon" />
-                <p>{item.fileName}</p>
-              </div>
-              <div className={styles.date}>{item.date}</div>
+            <div className={styles.block_file}>
+              <div
+                onClick={() => openModal(item)}
+                style={{ cursor: item.success ? "pointer" : "default" }}
+                key={item.id}
+                className={styles.purple_block}
+              >
+                <div className={styles.file_name}>
+                  <img src="/img/file_icon.png" alt="file_icon" />
+                  <p>{item.fileName}</p>
+                </div>
+                <div className={styles.date}>{item.date}</div>
 
-              <div
-                className={item.success ? styles.success : styles.success_not}
-              >
-                <p>Обработан успешно</p>{" "}
-                <img
-                  src={
-                    item.success ? "/img/success_black.png" : "/img/success.png"
+                <div
+                  className={item.success ? styles.success : styles.success_not}
+                >
+                  <p>Обработан успешно</p>{" "}
+                  <img
+                    src={
+                      item.success
+                        ? "/img/success_black.png"
+                        : "/img/success.png"
+                    }
+                    alt=""
+                  />
+                </div>
+                <div
+                  className={
+                    !item.success ? styles.success : styles.success_not
                   }
-                  alt=""
-                />
+                >
+                  <p>Не удалось обработать</p>
+                  <img
+                    src={
+                      item.success
+                        ? "/img/not_success.png"
+                        : "/img/not_success_black.png"
+                    }
+                    alt=""
+                  />
+                </div>
               </div>
               <div
-                className={!item.success ? styles.success : styles.success_not}
+                className={styles.delete}
+                onClick={() => deleteItem(item.id)}
               >
-                <p>Не удалось обработать</p>
-                <img
-                  src={
-                    item.success
-                      ? "/img/not_success.png"
-                      : "/img/not_success_black.png"
-                  }
-                  alt=""
-                />
+                <img src="/img/crash_history.png" alt="delete" />
               </div>
             </div>
           ))

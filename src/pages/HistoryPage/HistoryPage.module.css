@@ -5,6 +5,7 @@
   margin-top: 80px;
   height: 100%;
   gap: 10px;
+  justify-content: center;
 }
 
 .purple_block {
@@ -14,6 +15,7 @@
   display: flex;
   justify-content: space-between;
   font-size: 30px;
+  width: 100%;
 }
 
 .file_name {
@@ -100,4 +102,12 @@
 .params_text {
   font-size: 40px;
   font-weight: 600;
+}
+.block_file {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+.delete {
+  max-width: 87px;
 }
