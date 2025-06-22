@@ -1,11 +1,8 @@
 import { BtnUpload } from "@/components/ui/btn_upload/BtnUpload";
 import styles from "./AnaliticPage.module.css";
 import { BtnSent } from "@/components/ui/btn_sent/BtnSent";
-import { useState } from "react";
 import { FileSuccess } from "@/components/ui/file_success/FileSuccess";
 import { FileError } from "@/components/ui/file_error/FileError";
-import { BtnDownload } from "@/components/ui/btn_download/BtnDownload";
-import { BtnClean } from "@/components/ui/btn_clean/BtnClean";
 import { GenerationProcess } from "@/components/ui/gener_procces/GenerationProcess";
 import { BtnSentCan } from "@/components/ui/btn_sent_can/BtnSentCan";
 import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
@@ -25,14 +22,6 @@ export type HighlightData = {
 };
 
 export const AnaliticPage = () => {
-  // const [isUploading, setIsUploading] = useState(false);
-  // const [uploadState, setUploadState] = useState<
-  //   "initial" | "uploading" | "success" | "error"
-  // >("initial");
-  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  // const [highlights, setHighlights] = useState<HighlightData | null>(null);
-  // const [isDragOver, setIsDragOver] = useState(false);
-  // const [isParsing, setIsParsing] = useState(false);
   const {
     uploadState,
     isParsing,
@@ -52,17 +41,13 @@ export const AnaliticPage = () => {
   const handleFileUpload = (file: File) => {
     setFile(file);
 
-    // ставим статус «загружается»
     setUploadState("uploading");
 
-    // теперь проверяем формат
     if (!file.name.endsWith(".csv")) {
-      // просто отмечаем ошибку, но не обнуляем selectedFile
       setUploadState("error");
       return;
     }
 
-    // если всё ок — успех
     setUploadState("success");
   };
 
@@ -139,7 +124,6 @@ export const AnaliticPage = () => {
         }
       }
 
-      // Оставшиеся данные
       if (buffer.trim()) {
         try {
           const parsed: HighlightData = JSON.parse(buffer);

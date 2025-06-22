@@ -9,7 +9,6 @@ interface UploadState {
   highlights: HighlightData | null;
   isDragOver: boolean;
 
-  // экшены
   setUploadState: (state: UploadState["uploadState"]) => void;
   setParsing: (parsing: boolean) => void;
   setFile: (file: File | null) => void;
@@ -25,14 +24,12 @@ export const useUploadStore = create<
 >(
   persist<UploadState>(
     (set, get) => ({
-      // начальное состояние
       uploadState: "initial",
       isParsing: false,
       selectedFile: null,
       highlights: null,
       isDragOver: false,
 
-      // экшены для управления состоянием
       setUploadState: (uploadState) => set({ uploadState }),
 
       setParsing: (isParsing) => set({ isParsing }),
@@ -41,7 +38,6 @@ export const useUploadStore = create<
 
       setHighlights: (highlights) => set({ highlights }),
 
-      // частичное слияние incremental-данных
       mergeHighlights: (partial) =>
         set((state) => ({
           highlights: state.highlights
@@ -51,7 +47,6 @@ export const useUploadStore = create<
 
       setDragOver: (isDragOver) => set({ isDragOver }),
 
-      // сброс всего стейта в начальное состояние
       resetAll: () =>
         set({
           uploadState: "initial",
@@ -62,7 +57,7 @@ export const useUploadStore = create<
         }),
     }),
     {
-      name: "upload-storage", // ключ для persist в localStorage
+      name: "upload-storage",
     }
   )
 );

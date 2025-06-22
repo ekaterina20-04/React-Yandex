@@ -1,7 +1,7 @@
 import type { HighlightData } from "@/pages/AnaliticPage/AnaliticPage";
 export type HistoryItem = {
-  id: string; // уникальный ID (например, uuid)
-  date: string; // ISO строка даты
+  id: string;
+  date: string;
   fileName: string;
   success: boolean;
   highlights: HighlightData | null;
