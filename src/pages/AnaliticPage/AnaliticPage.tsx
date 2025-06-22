@@ -126,8 +126,8 @@ export const AnaliticPage = () => {
 
       if (buffer.trim()) {
         try {
-          const parsed: HighlightData = JSON.parse(buffer);
-          setHighlights(parsed);
+          const parsed: Partial<HighlightData> = JSON.parse(buffer);
+          mergeHighlights(parsed);
         } catch {
           console.warn("Не удалось распарсить остаток буфера:", buffer);
         }
@@ -136,13 +136,14 @@ export const AnaliticPage = () => {
       setParsing(false);
       setUploadState("ready");
 
-      if (highlights) {
+      const finalHighlights = useUploadStore.getState().highlights;
+      if (finalHighlights) {
         saveToHistory({
           id: generateId(),
           date: new Date().toISOString(),
           fileName: selectedFile.name,
           success: true,
-          highlights,
+          highlights: finalHighlights,
         });
       }
     } catch (err: any) {
