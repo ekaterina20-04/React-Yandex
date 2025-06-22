@@ -11,6 +11,7 @@ import { BtnSentCan } from "@/components/ui/btn_sent_can/BtnSentCan";
 import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
 import { saveToHistory } from "@/entities/history/saveToHistory";
 import { generateId } from "@/entities/aggregate/generateId";
+import { useUploadStore } from "@/entities/report/uploadStore";
 export type HighlightData = {
   total_spend_galactic: number;
   average_spend_galactic: number;
@@ -24,60 +25,70 @@ export type HighlightData = {
 };
 
 export const AnaliticPage = () => {
-  const [isUploading, setIsUploading] = useState(false);
-  const [uploadState, setUploadState] = useState<
-    "initial" | "uploading" | "success" | "error"
-  >("initial");
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [highlights, setHighlights] = useState<HighlightData | null>(null);
-  const [isDragOver, setIsDragOver] = useState(false);
-  const [isParsing, setIsParsing] = useState(false);
+  // const [isUploading, setIsUploading] = useState(false);
+  // const [uploadState, setUploadState] = useState<
+  //   "initial" | "uploading" | "success" | "error"
+  // >("initial");
+  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  // const [highlights, setHighlights] = useState<HighlightData | null>(null);
+  // const [isDragOver, setIsDragOver] = useState(false);
+  // const [isParsing, setIsParsing] = useState(false);
+  const {
+    uploadState,
+    isParsing,
+    selectedFile,
+    highlights,
+    isDragOver,
 
-  const handleFileUpload = async (file: File) => {
-    console.log("Загружается:", file.name);
+    setUploadState,
+    setParsing,
+    setFile,
+    setHighlights,
+    mergeHighlights,
+    setDragOver,
+    resetAll,
+  } = useUploadStore();
 
+  const handleFileUpload = (file: File) => {
     setUploadState("uploading");
-    try {
-      if (!file.name.endsWith(".csv")) {
-        throw new Error("Недопустимый формат файла");
-      }
-
-      setSelectedFile(file);
-
-      setUploadState("success");
-    } catch (err) {
-      console.error("Ошибка загрузки:", err);
+    if (!file.name.endsWith(".csv")) {
       setUploadState("error");
-      setSelectedFile(null);
+      setFile(null);
+      return;
     }
+    setFile(file);
+    setUploadState("success");
   };
+
   const handleDrop = (e: React.DragEvent) => {
     e.preventDefault();
-    setIsDragOver(false);
+    setDragOver(false);
     const file = e.dataTransfer.files[0];
     if (file) handleFileUpload(file);
   };
 
   const handleDragOver = (e: React.DragEvent) => {
     e.preventDefault();
-    setIsDragOver(true);
+    setDragOver(true);
   };
 
   const handleDragLeave = (e: React.DragEvent) => {
     e.preventDefault();
-    setIsDragOver(false);
+    setDragOver(false);
   };
+
   const getFrameClass = () => {
     if (isDragOver || uploadState === "uploading") return styles.frameUploading;
     if (uploadState === "success") return styles.frameSuccess;
     if (uploadState === "error") return styles.frameError;
     return styles.frameInitial;
   };
+
   const handleSendClick = async () => {
-    console.log("click");
-    setIsParsing(true);
+    setParsing(true);
     if (!selectedFile) {
       alert("Файл не выбран");
+      setParsing(false);
       return;
     }
 
@@ -85,7 +96,6 @@ export const AnaliticPage = () => {
       const formData = new FormData();
       formData.append("file", selectedFile);
       const BASE_URL = import.meta.env.VITE_BASE_URL;
-
       const response = await fetch(`${BASE_URL}/aggregate?rows=100`, {
         method: "POST",
         body: formData,
@@ -93,78 +103,67 @@ export const AnaliticPage = () => {
 
       if (!response.ok) {
         const errorData = await response.json();
-        alert("Ошибка сервера: " + errorData.error);
-        return;
+        throw new Error(errorData.error || "Серверная ошибка");
       }
-
       if (!response.body) {
-        alert("Ошибка: пустой ответ");
-        return;
+        throw new Error("Пустой ответ от сервера");
       }
 
       const reader = response.body.getReader();
       const decoder = new TextDecoder();
-      let { value, done } = await reader.read();
       let buffer = "";
+      let done = false;
 
       while (!done) {
-        buffer += decoder.decode(value, { stream: true });
+        const { value, done: d } = await reader.read();
+        done = d;
+        buffer += decoder.decode(value || new Uint8Array(), { stream: true });
 
-        // Разбиваем по строкам (ответ - json lines)
         const lines = buffer.split("\n");
-
-        // Последняя строка может быть неполной, оставляем ее в буфере
         buffer = lines.pop() || "";
 
         for (const line of lines) {
-          if (line.trim()) {
-            try {
-              const parsed: HighlightData = JSON.parse(line);
-              setHighlights((prev) => ({ ...prev, ...parsed }));
-
-              console.log("Получен объект:", parsed);
-            } catch (e) {
-              console.warn("Не удалось распарсить JSON:", line);
-            }
+          if (!line.trim()) continue;
+          try {
+            const parsed: Partial<HighlightData> = JSON.parse(line);
+            mergeHighlights(parsed);
+          } catch {
+            console.warn("Не удалось распарсить JSON:", line);
           }
         }
-
-        ({ value, done } = await reader.read());
       }
 
-      // Обработка остатка в буфере после окончания потока
+      // Оставшиеся данные
       if (buffer.trim()) {
         try {
           const parsed: HighlightData = JSON.parse(buffer);
-          console.log("Получен объект:", parsed);
           setHighlights(parsed);
-        } catch (e) {
-          console.warn("Не удалось распарсить JSON:", buffer);
+        } catch {
+          console.warn("Не удалось распарсить остаток буфера:", buffer);
         }
       }
 
       alert("Агрегация завершена");
-      console.log("hightlotns", highlights);
-      setIsParsing(false);
+      setParsing(false);
       setUploadState("initial");
+
       if (highlights) {
         saveToHistory({
           id: generateId(),
           date: new Date().toISOString(),
           fileName: selectedFile.name,
           success: true,
-          highlights: { ...highlights },
+          highlights,
         });
       }
-    } catch (error) {
-      alert("Ошибка при отправке: " + error);
-      setIsParsing(false);
+    } catch (err: any) {
+      alert("Ошибка при отправке: " + err.message);
+      setParsing(false);
       setUploadState("initial");
-
       saveToHistory({
         id: generateId(),
         date: new Date().toISOString(),
-        fileName: selectedFile.name,
+        fileName: selectedFile?.name || "—",
         success: false,
         highlights: null,
       });
@@ -172,11 +171,7 @@ export const AnaliticPage = () => {
   };
 
   const handleReset = () => {
-    setSelectedFile(null);
-    setUploadState("initial");
-    setHighlights(null);
-    setIsParsing(false);
-    console.log("close");
+    resetAll();
   };
   return (
     <>
