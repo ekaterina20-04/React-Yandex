@@ -8,7 +8,8 @@ import { BtnSentCan } from "@/components/ui/btn_sent_can/BtnSentCan";
 import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
 import { saveToHistory } from "@/entities/history/saveToHistory";
 import { generateId } from "@/entities/aggregate/generateId";
-import { useUploadStore } from "@/entities/report/uploadStore";
+import { useUploadStore } from "@/entities/aggregate/uploadStore";
+import { FileReady } from "@/components/ui/file_ready/FileReady";
 export type HighlightData = {
   total_spend_galactic: number;
   average_spend_galactic: number;
@@ -78,7 +79,6 @@ export const AnaliticPage = () => {
   const handleSendClick = async () => {
     setParsing(true);
     if (!selectedFile) {
-      alert("Файл не выбран");
       setParsing(false);
       return;
     }
@@ -133,9 +133,8 @@ export const AnaliticPage = () => {
         }
       }
 
-      alert("Агрегация завершена");
       setParsing(false);
-      setUploadState("initial");
+      setUploadState("ready");
 
       if (highlights) {
         saveToHistory({
@@ -147,7 +146,6 @@ export const AnaliticPage = () => {
         });
       }
     } catch (err: any) {
-      alert("Ошибка при отправке: " + err.message);
       setParsing(false);
       setUploadState("initial");
       saveToHistory({
@@ -167,8 +165,8 @@ export const AnaliticPage = () => {
     <>
       <div className={styles.main}>
         <p className={styles.title}>
-          Загрузите <b>csv</b> файл и получите <b>полную информацию</b> о нём
-          за сверхнизкое время
+          Загрузите <b>csv</b> файл и получите <b>полную информацию</b> о нём за
+          сверхнизкое время
         </p>
         <div
           className={`${styles.purple_block} ${getFrameClass()}`}
@@ -191,6 +189,13 @@ export const AnaliticPage = () => {
                       или перетащите сюда
                     </p>
                   </div>
+                </>
+              ) : uploadState === "ready" ? (
+                <>
+                  <FileReady
+                    fileName={selectedFile?.name ?? "—"}
+                    onClose={handleReset}
+                  />
                 </>
               ) : uploadState === "success" ? (
                 <>

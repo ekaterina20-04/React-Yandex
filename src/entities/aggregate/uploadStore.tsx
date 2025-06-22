@@ -3,7 +3,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 interface UploadState {
-  uploadState: "initial" | "uploading" | "success" | "error";
+  uploadState: "initial" | "uploading" | "success" | "error" | "ready";
   isParsing: boolean;
   selectedFile: File | null;
   highlights: HighlightData | null;
@@ -37,7 +37,6 @@ export const useUploadStore = create<
       setFile: (selectedFile) => set({ selectedFile }),
 
       setHighlights: (highlights) => set({ highlights }),
-
       mergeHighlights: (partial) =>
         set((state) => ({
           highlights: state.highlights

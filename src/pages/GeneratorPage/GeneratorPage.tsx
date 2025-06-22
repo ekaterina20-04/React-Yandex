@@ -27,7 +27,7 @@ export const GeneratorPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await fetchReport({ size: 0.001 });
+      const result = await fetchReport({ size: 0.0001 });
 
       const fileName = `report_${Date.now()}.csv`;
       downloadCSV(result, fileName);
@@ -51,7 +51,7 @@ export const GeneratorPage = () => {
     setLoading(false);
     setDone(null);
   };
-
+  console.log(data);
   return (
     <>
       <div className={styles.main}>

@@ -23,6 +23,7 @@ export const BtnUpload = ({ onFileSelect }: Props) => {
       </button>
       <input
         type="file"
+        accept=".csv"
         ref={inputRef}
         onChange={handleFileChange}
         style={{ display: "none" }}
