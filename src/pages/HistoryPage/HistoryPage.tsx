@@ -3,6 +3,9 @@ import styles from "./HistoryPage.module.css";
 import type { HistoryItem } from "@/entities/history/saveToHistory";
 import { Modal } from "./HistoryModal";
 import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
+import { ClearAll } from "@/components/ui/clear_all/ClearAll";
+import { GenerMore } from "@/components/ui/gener_more/GenerMore";
+import { NavLink } from "react-router-dom";
 
 export const HistoryPage = () => {
   const [history, setHistory] = useState<HistoryItem[]>([]);
@@ -29,6 +32,12 @@ export const HistoryPage = () => {
       localStorage.setItem("uploadHistory", JSON.stringify(updated));
       setHistory(updated);
     }
+  };
+  const clearAll = () => {
+    console.log("here");
+    setHistory([]);
+
+    localStorage.removeItem("uploadHistory");
   };
   return (
     <>
@@ -88,6 +97,19 @@ export const HistoryPage = () => {
             </div>
           ))
         )}
+        <div className={styles.btns}>
+          <NavLink to="/generate">
+            <div className={styles.gener_more}>
+              <GenerMore />
+            </div>
+          </NavLink>
+
+          {!(history.length === 0) && (
+            <div className={styles.clear_all} onClick={clearAll}>
+              <ClearAll />
+            </div>
+          )}
+        </div>
       </div>
       {selectedItem && selectedItem.highlights && (
         <Modal onClose={closeModal}>

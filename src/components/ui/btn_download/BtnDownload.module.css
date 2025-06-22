@@ -7,4 +7,5 @@
   color: var(--c201);
   opacity: 1;
   font-weight: 500;
+  cursor: pointer;
 }

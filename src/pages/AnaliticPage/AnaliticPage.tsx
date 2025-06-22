@@ -1,17 +1,15 @@
 import { BtnUpload } from "@/components/ui/btn_upload/BtnUpload";
 import styles from "./AnaliticPage.module.css";
 import { BtnSent } from "@/components/ui/btn_sent/BtnSent";
-import { useState } from "react";
 import { FileSuccess } from "@/components/ui/file_success/FileSuccess";
 import { FileError } from "@/components/ui/file_error/FileError";
-import { BtnDownload } from "@/components/ui/btn_download/BtnDownload";
-import { BtnClean } from "@/components/ui/btn_clean/BtnClean";
 import { GenerationProcess } from "@/components/ui/gener_procces/GenerationProcess";
 import { BtnSentCan } from "@/components/ui/btn_sent_can/BtnSentCan";
 import { dayOfYearToDateString } from "@/entities/aggregate/dayOfYear";
 import { saveToHistory } from "@/entities/history/saveToHistory";
 import { generateId } from "@/entities/aggregate/generateId";
-import { useUploadStore } from "@/entities/report/uploadStore";
+import { useUploadStore } from "@/entities/aggregate/uploadStore";
+import { FileReady } from "@/components/ui/file_ready/FileReady";
 export type HighlightData = {
   total_spend_galactic: number;
   average_spend_galactic: number;
@@ -25,14 +23,6 @@ export type HighlightData = {
 };
 
 export const AnaliticPage = () => {
-  // const [isUploading, setIsUploading] = useState(false);
-  // const [uploadState, setUploadState] = useState<
-  //   "initial" | "uploading" | "success" | "error"
-  // >("initial");
-  // const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  // const [highlights, setHighlights] = useState<HighlightData | null>(null);
-  // const [isDragOver, setIsDragOver] = useState(false);
-  // const [isParsing, setIsParsing] = useState(false);
   const {
     uploadState,
     isParsing,
@@ -52,17 +42,13 @@ export const AnaliticPage = () => {
   const handleFileUpload = (file: File) => {
     setFile(file);
 
-    // ставим статус «загружается»
     setUploadState("uploading");
 
-    // теперь проверяем формат
     if (!file.name.endsWith(".csv")) {
-      // просто отмечаем ошибку, но не обнуляем selectedFile
       setUploadState("error");
       return;
     }
 
-    // если всё ок — успех
     setUploadState("success");
   };
 
@@ -93,7 +79,6 @@ export const AnaliticPage = () => {
   const handleSendClick = async () => {
     setParsing(true);
     if (!selectedFile) {
-      alert("Файл не выбран");
       setParsing(false);
       return;
     }
@@ -139,7 +124,6 @@ export const AnaliticPage = () => {
         }
       }
 
-      // Оставшиеся данные
       if (buffer.trim()) {
         try {
           const parsed: HighlightData = JSON.parse(buffer);
@@ -149,9 +133,8 @@ export const AnaliticPage = () => {
         }
       }
 
-      alert("Агрегация завершена");
       setParsing(false);
-      setUploadState("initial");
+      setUploadState("ready");
 
       if (highlights) {
         saveToHistory({
@@ -163,7 +146,6 @@ export const AnaliticPage = () => {
         });
       }
     } catch (err: any) {
-      alert("Ошибка при отправке: " + err.message);
       setParsing(false);
       setUploadState("initial");
       saveToHistory({
@@ -183,8 +165,8 @@ export const AnaliticPage = () => {
     <>
       <div className={styles.main}>
         <p className={styles.title}>
-          Загрузите <b>csv</b> файл и получите <b>полную информацию</b> о нём
-          за сверхнизкое время
+          Загрузите <b>csv</b> файл и получите <b>полную информацию</b> о нём за
+          сверхнизкое время
         </p>
         <div
           className={`${styles.purple_block} ${getFrameClass()}`}
@@ -207,6 +189,13 @@ export const AnaliticPage = () => {
                       или перетащите сюда
                     </p>
                   </div>
+                </>
+              ) : uploadState === "ready" ? (
+                <>
+                  <FileReady
+                    fileName={selectedFile?.name ?? "—"}
+                    onClose={handleReset}
+                  />
                 </>
               ) : uploadState === "success" ? (
                 <>

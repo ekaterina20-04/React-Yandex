@@ -112,4 +112,11 @@
 }
 .delete {
   max-width: 87px;
+  cursor: pointer;
+}
+.btns {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  margin: 20px auto;
 }

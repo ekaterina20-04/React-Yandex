@@ -8,7 +8,9 @@
   font-size: 30px;
   text-align: center;
 }
-
+.text_functional {
+  text-align: center;
+}
 .purple_block {
   background-color: var(--purple-dim);
   border-radius: 40px;
@@ -34,11 +36,6 @@
   font-size: 35px;
   font-weight: 300;
   margin-top: 10px;
-}
-.button {
-}
-
-.text_functional {
 }
 
 .btn_sent {
