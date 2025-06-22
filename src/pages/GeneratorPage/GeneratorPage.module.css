@@ -14,3 +14,7 @@
   display: flex;
   justify-content: center;
 }
+.start_gener {
+  display: flex;
+  flex-direction: column;
+}

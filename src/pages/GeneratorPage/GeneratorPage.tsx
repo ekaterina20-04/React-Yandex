@@ -5,11 +5,13 @@ import { useState } from "react";
 import { fetchReport } from "@/entities/report/api";
 import { FileError } from "@/components/ui/file_error/FileError";
 import { addHistory } from "@/entities/history/history";
+import { ErrorGener } from "@/components/ui/error_gener/ErrorGener";
+import { Done } from "@/components/ui/done/Done";
 export const GeneratorPage = () => {
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
-
+  const [done, setDone] = useState<string | null>(null);
   const downloadCSV = (csvData: string, fileName: string) => {
     const blob = new Blob([csvData], { type: "text/csv;charset=utf-8;" });
     const url = URL.createObjectURL(blob);
@@ -26,7 +28,7 @@ export const GeneratorPage = () => {
     setLoading(true);
     setError(null);
     try {
-      const result = await fetchReport({ size: 0.0001 });
+      const result = await fetchReport({ size: 0.001 });
 
       const fileName = `report_${Date.now()}.csv`;
       downloadCSV(result, fileName);
@@ -36,7 +38,7 @@ export const GeneratorPage = () => {
         fileName,
         timestamp: Date.now(),
       });
-
+      setDone(result);
       setData(result);
     } catch (err: any) {
       setError(err.message);
@@ -57,14 +59,15 @@ export const GeneratorPage = () => {
           Сгенерируйте готовый csv-файл нажатием одной кнопки
         </div>
         <div className={styles.btn} onClick={handleLoad}>
-          {!loading && !error && <BtnGeneration />}
+          {!loading && !error && !done && <BtnGeneration />}
           {loading && (
-            <>
+            <div className={styles.start_gener}>
               <GenerationProcess />{" "}
               <div className={styles.text}>идет процесс генерации</div>
-            </>
+            </div>
           )}
-          {error && <FileError onClose={handleReset} />}
+          {error && <ErrorGener onClose={handleReset} />}
+          {done && <Done onClose={handleReset} />}
         </div>
       </div>
     </>

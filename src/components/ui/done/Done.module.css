@@ -1,0 +1,17 @@
+.succButton {
+  padding: 15px 30px;
+  font-size: 35px;
+  border: none;
+  border-radius: 10px;
+  background-color: var(--mint);
+  max-height: 70px;
+}
+
+.closing {
+  display: flex;
+  gap: 10px;
+  justify-content: space-evenly;
+}
+.text {
+  font-size: 35px;
+}
