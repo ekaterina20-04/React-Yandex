@@ -32,15 +32,7 @@
   font-size: 30px;
   font-weight: 300;
 }
-.anal,
-.gener,
-.history {
-  display: flex;
-  gap: 16px;
-}
-.history {
-  margin-left: 10px;
-}
+
 .h_img {
   height: 31px;
 }
@@ -48,4 +40,19 @@
 .g_img {
   height: 35px;
   width: 35px;
+}
+.link {
+  display: flex;
+  gap: 16px;
+  text-decoration: none;
+  color: inherit;
+}
+
+.linkActive {
+  display: flex;
+  gap: 16px;
+  text-decoration: none;
+  padding-bottom: 10px;
+  border-bottom: 2px solid var(--c201);
+  color: inherit;
 }

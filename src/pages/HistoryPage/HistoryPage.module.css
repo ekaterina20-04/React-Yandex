@@ -1,0 +1,115 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  margin: 0 40px;
+  margin-top: 80px;
+  height: 100%;
+  gap: 10px;
+  justify-content: center;
+}
+
+.purple_block {
+  background-color: var(--purple-intance);
+  padding: 30px 20px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: space-between;
+  font-size: 30px;
+  min-width: 92%;
+}
+
+.file_name {
+  display: flex;
+  gap: 15px;
+
+  align-items: center;
+  color: var(--c201);
+}
+
+.date {
+  color: var(--c201);
+
+  display: flex;
+  align-items: center;
+}
+
+.success {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  color: var(--c201);
+  cursor: pointer;
+}
+.success_not {
+  display: flex;
+  gap: 15px;
+  align-items: center;
+  color: var(--gray-purple);
+}
+
+.modalOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+}
+.closeBtn {
+  position: absolute;
+  left: 76%;
+  margin-top: 100px;
+  cursor: pointer;
+}
+.modalContent {
+  background: white;
+  padding: 40px;
+  border-radius: 45px;
+  position: relative;
+  height: 60vh;
+  overflow-y: auto;
+}
+
+.closeBtn {
+  position: absolute;
+  top: 10px;
+  right: 15px;
+  font-size: 24px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.white_block {
+  width: 900px;
+  margin-bottom: 15px;
+  height: 117px;
+  background-color: var(--purple-dim);
+  border-radius: 24px;
+}
+.block_text {
+  padding-top: 20px;
+  font-size: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  flex-direction: column;
+}
+.params_text {
+  font-size: 40px;
+  font-weight: 600;
+}
+.block_file {
+  display: flex;
+  flex-direction: row;
+  gap: 40px;
+}
+.delete {
+  max-width: 87px;
+}

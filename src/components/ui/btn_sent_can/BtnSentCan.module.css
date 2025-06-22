@@ -1,0 +1,11 @@
+.sendButtonCan {
+  padding: 20px 27px;
+  font-size: 35px;
+  border: none;
+  border-radius: 25px;
+  background-color: var(--green);
+  color: var(--c201);
+  opacity: 1;
+  font-weight: 500;
+  cursor: pointer;
+}

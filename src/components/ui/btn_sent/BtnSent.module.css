@@ -1,0 +1,11 @@
+.sendButton {
+  padding: 20px 27px;
+  font-size: 35px;
+  border: none;
+  border-radius: 25px;
+  background-color: var(--gray-light);
+  color: var(--gray-dark);
+  cursor: not-allowed;
+  opacity: 1;
+  font-weight: 500;
+}

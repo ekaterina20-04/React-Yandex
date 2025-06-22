@@ -1,0 +1,20 @@
+.main {
+  display: flex;
+  flex-direction: column;
+  margin: 0 40px;
+  margin-top: 80px;
+  height: 100%;
+}
+.text {
+  font-size: 30px;
+  text-align: center;
+}
+.btn {
+  margin-top: 20px;
+  display: flex;
+  justify-content: center;
+}
+.start_gener {
+  display: flex;
+  flex-direction: column;
+}

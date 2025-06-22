@@ -1,0 +1,22 @@
+.main {
+}
+.loader {
+  padding: 10px 176px;
+  background-color: var(--purple-intance);
+  border-radius: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loader_img {
+  animation: rotate 1s linear infinite;
+}
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
