@@ -1,13 +1,15 @@
 import { Close } from "../close/Close";
 import styles from "./FileSuccess.module.css";
 type Props = {
+  fileName: string;
+
   onClose: () => void;
 };
-export const FileSuccess = ({ onClose }: Props) => {
+export const FileSuccess = ({ fileName, onClose }: Props) => {
   return (
     <div className={styles.closing}>
       <div>
-        <button className={styles.succButton}>file_name</button>
+        <button className={styles.succButton}>{fileName}</button>
       </div>
 
       <Close onClick={onClose} />

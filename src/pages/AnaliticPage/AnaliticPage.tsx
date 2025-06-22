@@ -50,13 +50,19 @@ export const AnaliticPage = () => {
   } = useUploadStore();
 
   const handleFileUpload = (file: File) => {
+    setFile(file);
+
+    // ставим статус «загружается»
     setUploadState("uploading");
+
+    // теперь проверяем формат
     if (!file.name.endsWith(".csv")) {
+      // просто отмечаем ошибку, но не обнуляем selectedFile
       setUploadState("error");
-      setFile(null);
       return;
     }
-    setFile(file);
+
+    // если всё ок — успех
     setUploadState("success");
   };
 
@@ -204,13 +210,19 @@ export const AnaliticPage = () => {
                 </>
               ) : uploadState === "success" ? (
                 <>
-                  <FileSuccess onClose={handleReset} />
+                  <FileSuccess
+                    fileName={selectedFile?.name ?? "—"}
+                    onClose={handleReset}
+                  />
                   <div className={styles.for_p}>
                     <p className={styles.text_functional}>файл загружен!</p>
                   </div>
                 </>
               ) : (
-                <FileError onClose={handleReset}></FileError>
+                <FileError
+                  fileName={selectedFile?.name ?? "—"}
+                  onClose={handleReset}
+                ></FileError>
               )}
             </div>
           </div>

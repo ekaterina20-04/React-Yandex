@@ -3,7 +3,6 @@ import styles from "./GeneratorPage.module.css";
 import { GenerationProcess } from "@/components/ui/gener_procces/GenerationProcess";
 import { useState } from "react";
 import { fetchReport } from "@/entities/report/api";
-import { FileError } from "@/components/ui/file_error/FileError";
 import { addHistory } from "@/entities/history/history";
 import { ErrorGener } from "@/components/ui/error_gener/ErrorGener";
 import { Done } from "@/components/ui/done/Done";
@@ -50,6 +49,7 @@ export const GeneratorPage = () => {
     setData(null);
     setError(null);
     setLoading(false);
+    setDone(null);
   };
 
   return (
@@ -58,8 +58,12 @@ export const GeneratorPage = () => {
         <div className={styles.text}>
           Сгенерируйте готовый csv-файл нажатием одной кнопки
         </div>
-        <div className={styles.btn} onClick={handleLoad}>
-          {!loading && !error && !done && <BtnGeneration />}
+        <div className={styles.btn}>
+          {!loading && !error && !done && (
+            <div onClick={handleLoad}>
+              <BtnGeneration />
+            </div>
+          )}
           {loading && (
             <div className={styles.start_gener}>
               <GenerationProcess />{" "}
